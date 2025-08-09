@@ -19,7 +19,8 @@ const app = express();
 const allowedOrigins: string[] = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://flowva-frontend.vercel.app",
+  "https://tourbirth-frontend.vercel.app",
+  "https://tourbirth-dashboard.vercel.app"
 ];
 
 app.use(

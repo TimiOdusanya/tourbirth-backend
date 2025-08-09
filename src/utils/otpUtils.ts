@@ -29,7 +29,7 @@ export const sendEmail = async (
       {
         From: {
           Email:  "owambe.erp@gmail.com",
-          Name: "Flowva",
+          Name: "Tourbirth",
         },
         To: [
           {

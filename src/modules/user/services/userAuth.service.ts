@@ -15,10 +15,10 @@ export const signup = async (userData: any) => {
 //   await user.save();
 
   await sendEmail(user.email, "welcomeEmail", {
-    subject: "Welcome to Flowva",
+    subject: "Welcome to Tour Birth",
     body: "Thank you for signing up! We're excited to have you on board.",
     buttonText: "Get Started",
-    buttonLink: "https://flowva-dashboard.vercel.app",
+    buttonLink: "https://tourbirth-dashboard.vercel.app",
   });
 
 //   await sendEmail(user.email, "accountVerification", {

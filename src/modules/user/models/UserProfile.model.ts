@@ -2,8 +2,16 @@ import mongoose, { Document, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 
 export interface IUser extends Document {
+  firstName: string;
+  middleName: string;
+  fullName: string;
+  surname: string;
+  gender: string;
   email: string;
   password: string;
+  phoneNumber: string;
+  address: string;
+  profilePicture: string;
   isVerified: boolean;
   twoFactorEnabled: boolean;
   twoFactorSecret: string;
@@ -14,6 +22,26 @@ export interface IUser extends Document {
 
 const userSchema = new Schema<IUser>(
   {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    middleName: {
+      type: String,
+      default: "",
+    },
+    fullName: {
+      type: String,
+    },
+    surname: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+      // enum: Object.values(userGender),
+    },
     email: {
       type: String,
       required: true,
@@ -22,6 +50,14 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      default: "",
     },
     isVerified: {
       type: Boolean,
@@ -35,6 +71,14 @@ const userSchema = new Schema<IUser>(
       type: String,
       default: "",
     },
+    profilePicture: [
+      {
+        name: { type: String },
+        size: { type: Number },
+        type: { type: String },
+        link: { type: String },
+      },
+    ],
     verificationOTP: String,
     resetPasswordOTP: String,
   },
