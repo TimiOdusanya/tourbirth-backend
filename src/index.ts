@@ -8,7 +8,9 @@ import logger from "./lib/log/winston.log";
 import httpLogger from "./lib/log/morgan.log";
 
 // Routes
-import authRoutes from "./modules/user/routes";
+import authRoutes from "./modules/shared/routes";
+import userRoutes from "./modules/user/routes";
+import adminRoutes from "./modules/admin/routes";
 
 
 
@@ -50,6 +52,9 @@ app.get("/", (req: Request, res: Response) => {
 console.log("Starting server...");
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1", userRoutes);
+app.use("/api/v1", adminRoutes);
+
 
 const port = process.env.PORT || 8081;
 
