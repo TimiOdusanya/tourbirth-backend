@@ -5,6 +5,7 @@ import { isUser } from "../../../types/typeGuards";
 import { updateProfilePicture } from "../../../utils/profilePictureUtils";
 import { UserModel } from "../../user/models/userProfile.model";
 
+
 export const signup = async (req: Request, res: Response) => {
   try {
     const user = await authService.signup(req.body);
@@ -133,7 +134,7 @@ export const updateUserProfilePicture = async (req: AuthenticatedRequest, res: R
       return res.status(400).json({ message: "Profile picture data is required" });
     }
 
-    const updatedUser = await updateProfilePicture(UserModel, req.user._id, profilePicture);
+    const updatedUser = await updateProfilePicture(UserModel , req.user._id, profilePicture);
     
     res.json({ 
       success: true, 
