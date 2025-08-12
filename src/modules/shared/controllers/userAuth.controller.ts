@@ -6,6 +6,7 @@ import { updateProfilePicture } from "../../../utils/profilePictureUtils";
 import { UserModel } from "../../user/models/userProfile.model";
 
 
+
 export const signup = async (req: Request, res: Response) => {
   try {
     const user = await authService.signup(req.body);
