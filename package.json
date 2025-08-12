@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
-    "build": "echo 'Building project...' && tsc && echo '✅ Build successful!'",
-    "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dev": "nodemon", 
+  "build": "echo 'Building project...' && tsc && echo '✅ Build successful!'",
+  "start": "node dist/index.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
