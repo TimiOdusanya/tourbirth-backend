@@ -13,23 +13,26 @@ export const generateTempPassword = (): string => {
   return result;
 };
 
-
-
 // Send companion welcome email
 export const sendCompanionWelcomeEmail = async (
   companion: ICompanion,
-  booking: IBooking,
+  booking: Partial<IBooking> | { packageName: string; bookingId: string; travelDate: Date; description: string },
   destination: IDestination,
   tempPassword: string
 ): Promise<void> => {
+  const packageName = 'packageName' in booking ? booking.packageName : 'TB-Package';
+  const bookingId = 'bookingId' in booking ? booking.bookingId : 'TB-Booking';
+  const travelDate = 'travelDate' in booking ? booking.travelDate : new Date();
+  const description = 'description' in booking ? booking.description : 'Trip details';
+
   await sendEmail(companion.email, 'companionWelcome', {
     subject: 'Welcome to TourBirth - Trip Companion',
     companionName: `${companion.firstName} ${companion.lastName}`,
-    packageName: booking.packageName,
-    bookingId: booking.bookingId,
+    packageName: packageName || 'TB-Package',
+    bookingId: bookingId || 'TB-Booking',
     destination: `${destination.city}, ${destination.country}`,
-    travelDate: new Date(booking.travelDate).toLocaleDateString(),
-    description: booking.description,
+    travelDate: travelDate ? new Date(travelDate).toLocaleDateString() : new Date().toLocaleDateString(),
+    description: description || 'Trip details',
     email: companion.email,
     tempPassword: tempPassword,
     frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000'

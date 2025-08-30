@@ -7,6 +7,7 @@ export interface ICompanion extends Document {
   relationship: RelationshipType;
   email: string;
   phoneNumber: string;
+  password?: string; // Permanent password (optional)
   isRegistered: boolean;
   tempPassword?: string;
   userId: mongoose.Types.ObjectId; // Reference to the main user
@@ -23,6 +24,7 @@ const CompanionSchema = new Schema<ICompanion>(
     },
     email: { type: String, required: true },
     phoneNumber: { type: String, required: true },
+    password: { type: String }, // Optional permanent password
     isRegistered: { type: Boolean, default: false },
     tempPassword: { type: String },
     userId: { 

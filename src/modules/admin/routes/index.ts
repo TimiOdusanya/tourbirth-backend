@@ -5,6 +5,7 @@ import bookingRoutes from "./booking.routes";
 import dashboardRoutes from "./dashboard.routes";
 import userProfileRoutes from "./userProfile.routes";
 import documentUploadRoutes from "./documentUpload.routes";
+import userBookingRoutes from "./userBooking.routes";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use("/bookings", bookingRoutes);
 router.use("/dashboard", dashboardRoutes);
 router.use("/profiles", userProfileRoutes);
 router.use("/documents", documentUploadRoutes);
+router.use("/user-bookings", userBookingRoutes);
 
 export default router;

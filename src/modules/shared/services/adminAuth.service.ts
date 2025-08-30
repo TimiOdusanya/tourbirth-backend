@@ -88,3 +88,27 @@ export const verifyForgotPassword = async (email: string, otp: string) => {
 export const getAdminProfile = async (adminId: string) => {
   return await AdminModel.findById(adminId).exec();
 };
+
+
+export const changePassword = async (email: string, oldPassword: string, newPassword: string) => {
+  const user = await AdminModel.findOne({ email });
+  if (!user) throw new Error("User not found");
+
+  // Check if the old password matches the current password
+  const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+  if (!isOldPasswordValid) {
+    throw new Error("Old password is incorrect");
+  }
+
+  // Check if the new password is the same as the old password
+  const isNewPasswordSame = await bcrypt.compare(newPassword, user.password);
+  if (isNewPasswordSame) {
+    throw new Error("New password cannot be the same as the old password");
+  }
+
+  // Hash and save the new password
+  user.password = newPassword;
+  await user.save();
+
+  return { message: "Password changed successfully" };
+};
