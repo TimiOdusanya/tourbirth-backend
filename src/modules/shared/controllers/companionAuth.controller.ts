@@ -1,125 +1,132 @@
 import { Request, Response } from "express";
-import { CompanionModel } from "../models/companion.model";
-import { UserModel } from "../../user/models/userProfile.model";
+import { AuthenticatedRequest } from "../../../types/express";
 import { Role } from "../../../types/roles";
-import bcrypt from "bcryptjs";
+import { 
+  companionLogin, 
+  updateCompanionProfile, 
+  getCompanionProfile,
+  changeCompanionPassword 
+} from "../services/companionAuth.service";
 
-// Complete companion registration
-export const completeCompanionRegistration = async (req: Request, res: Response) => {
+// Companion login
+export const login = async (req: Request, res: Response) => {
   try {
-    const { email, tempPassword, newPassword, firstName, lastName, phoneNumber } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !tempPassword || !newPassword || !firstName || !lastName || !phoneNumber) {
+    if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required"
+        message: "Email and password are required"
       });
     }
 
-    // Find companion by email and temp password
-    const companion = await CompanionModel.findOne({ 
-      email, 
-      tempPassword,
-      isRegistered: false 
-    });
+    const result = await companionLogin(email, password);
 
-    if (!companion) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid email or temporary password"
-      });
-    }
-
-    // Check if user already exists with this email
-    const existingUser = await UserModel.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User with this email already exists"
-      });
-    }
-
-    // Create new user account for companion
-    const hashedPassword = await bcrypt.hash(newPassword, 12);
-    
-    const newUser = new UserModel({
-      firstName,
-      lastName,
-      email,
-      password: hashedPassword,
-      phoneNumber,
-      role: Role.User,
-      isVerified: true // Companions are pre-verified
-    });
-
-    await newUser.save();
-
-    // Update companion to mark as registered
-    companion.isRegistered = true;
-    companion.tempPassword = undefined; // Remove temp password
-    await companion.save();
-
-    res.status(201).json({
+    res.status(200).json({
       success: true,
-      message: "Companion registration completed successfully",
-      user: {
-        _id: newUser._id,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        email: newUser.email,
-        phoneNumber: newUser.phoneNumber,
-        role: newUser.role
-      }
+      message: result.message || "Login successful",
+      companion: result.companion,
+      accessToken: result.accessToken,
+      isTempPassword: result.isTempPassword
     });
   } catch (error: any) {
-    res.status(500).json({
+    res.status(400).json({
       success: false,
-      message: error.message || "Internal server error"
+      message: error.message
     });
   }
 };
 
-// Companion login with temp password
-export const companionLogin = async (req: Request, res: Response) => {
+// Update companion profile (authenticated)
+export const updateProfile = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { email, tempPassword } = req.body;
-
-    if (!email || !tempPassword) {
-      return res.status(400).json({
+    if (!req.user || req.user.role !== Role.Companion) {
+      return res.status(403).json({
         success: false,
-        message: "Email and temporary password are required"
+        message: "Access denied - Companion required"
       });
     }
 
-    // Find companion by email and temp password
-    const companion = await CompanionModel.findOne({ 
-      email, 
-      tempPassword,
-      isRegistered: false 
-    });
+    const updateData = req.body;
+    const companionId = req.user._id;
 
-    if (!companion) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid email or temporary password"
-      });
-    }
+    // Remove sensitive fields that shouldn't be updated
+    delete updateData.email;
+    delete updateData.userId;
+    delete updateData.isRegistered;
+
+    const companion = await updateCompanionProfile(companionId, updateData);
 
     res.status(200).json({
       success: true,
-      message: "Temporary login successful. Please complete your registration.",
-      companion: {
-        _id: companion._id,
-        firstName: companion.firstName,
-        lastName: companion.lastName,
-        email: companion.email,
-        phoneNumber: companion.phoneNumber
-      }
+      message: "Profile updated successfully",
+      companion
     });
   } catch (error: any) {
-    res.status(500).json({
+    const statusCode = error.message.includes("not found") ? 404 : 400;
+    res.status(statusCode).json({
       success: false,
-      message: error.message || "Internal server error"
+      message: error.message
+    });
+  }
+};
+
+// Get companion profile (authenticated)
+export const getProfile = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user || req.user.role !== Role.Companion) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied - Companion required"
+      });
+    }
+
+    const companionId = req.user._id;
+    const companion = await getCompanionProfile(companionId);
+
+    res.status(200).json({
+      success: true,
+      companion
+    });
+  } catch (error: any) {
+    const statusCode = error.message.includes("not found") ? 404 : 400;
+    res.status(statusCode).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Change companion password (authenticated)
+export const changePassword = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user || req.user.role !== Role.Companion) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied - Companion required"
+      });
+    }
+
+    const { oldPassword, newPassword } = req.body;
+
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Old password and new password are required"
+      });
+    }
+
+    const companionId = req.user._id;
+    const result = await changeCompanionPassword(companionId, oldPassword, newPassword);
+
+    res.status(200).json({
+      success: true,
+      message: result.message
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message
     });
   }
 }; 

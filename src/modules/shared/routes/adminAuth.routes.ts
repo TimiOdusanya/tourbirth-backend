@@ -7,8 +7,9 @@ import {
   verifyForgotPassword,
   getAdminProfile,
   updateAdminProfilePicture,
+  changePassword
 } from "../controllers/adminAuth.controller";
-import { authenticate } from "../../../middleware/authMiddleware";
+import { authenticate,check2FA } from "../../../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -17,7 +18,9 @@ router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.put("/reset-password", resetPassword);
 router.post("/verify-forgot-password", verifyForgotPassword);
+router.put('/change-password', authenticate, check2FA, changePassword);
 //router.get("/profile", authenticate, getAdminProfile);
 router.put("/profile/picture", authenticate, updateAdminProfilePicture);
+
 
 export default router;

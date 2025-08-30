@@ -118,3 +118,14 @@ export const updateAdminProfilePicture = async (req: AuthenticatedRequest, res: 
     res.status(500).json({ message: error.message || "Internal server error" });
   }
 };
+
+
+export const changePassword = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { email, oldPassword, newPassword } = req.body;
+    const result = await authService.changePassword(email, oldPassword, newPassword);
+    res.status(200).json(result);
+  } catch (error: any ) {
+    res.status(400).json({ message: error.message });
+  }
+};
