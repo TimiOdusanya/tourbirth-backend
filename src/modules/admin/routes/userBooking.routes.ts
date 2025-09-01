@@ -13,7 +13,7 @@ const router = express.Router();
 router.use(authenticate);
 
 // User booking management routes
-router.put("/:userId", updateUserBooking);
+router.patch("/:userId", updateUserBooking);
 router.get("/", getAllUserBookings);
 router.get("/:userId", getUserBookingById);
 router.patch("/:userId/status", updateUserBookingStatus);
