@@ -88,7 +88,7 @@ const UserSchema = new Schema<IUser>({
     default: false 
   },
   isBooked:{
-    type: Boolean,
+    type: Boolean,            
     default: false
   },
   twoFactorEnabled: { 

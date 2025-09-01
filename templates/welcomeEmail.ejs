@@ -1,9 +1,45 @@
-<div class="content">
-  <h2><%= subject %></h2>
-  <p>Hello,</p>
-  <p><%= body %></p>
-  <a href="<%= buttonLink %>" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
-    <%= buttonText %>
-  </a>
-  <p>If you have any questions, feel free to contact us.</p>
+<div class="welcome-container">
+    <div class="welcome-hero">
+        <div class="welcome-icon">🎉</div>
+        <h1 class="welcome-title">Welcome to TourBirth!</h1>
+        <p class="welcome-subtitle">Your journey to extraordinary adventures begins here</p>
+    </div>
+    
+    <div class="welcome-content">
+        <div class="welcome-message">
+            <p>Hello there, adventurer! 👋</p>
+            <p>We're absolutely thrilled to have you join the TourBirth family. You've just taken the first step towards discovering some of the most incredible destinations and experiences the world has to offer.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Curated Destinations</h3>
+                <p>Handpicked locations that promise unforgettable memories</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Premium Experiences</h3>
+                <p>Luxury accommodations and exclusive activities</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Safe Travel</h3>
+                <p>Your security and comfort are our top priorities</p>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <p class="cta-text">Ready to start planning your next adventure?</p>
+            <a href="<%= buttonLink %>" class="cta-button">
+                <span class="button-text"><%= buttonText %></span>
+                <span class="button-arrow">→</span>
+            </a>
+        </div>
+        
+        <div class="welcome-footer">
+            <p>If you have any questions or need assistance, our travel experts are here to help!</p>
+            <p class="contact-info">📧 support@tourbirth.com | 📞 +1 (555) 123-4567</p>
+        </div>
+    </div>
 </div>

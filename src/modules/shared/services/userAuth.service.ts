@@ -11,7 +11,8 @@ export const signup = async (userData: any) => {
 
   const user = new UserModel({
     ...userData,
-    role: "user"
+    role: "user",
+    isBooked: true
   });
 
   await sendEmail(user.email, "welcomeEmail", {
