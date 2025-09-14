@@ -22,7 +22,8 @@ const allowedOrigins: string[] = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://tourbirth-frontend.vercel.app",
-  "https://tourbirth-dashboard.vercel.app"
+  "https://tourbirth-dashboard.vercel.app",
+  "https://tours-one-gamma.vercel.app"
 ];
 
 app.use(

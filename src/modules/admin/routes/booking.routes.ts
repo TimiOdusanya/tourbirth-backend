@@ -2,10 +2,13 @@ import express from "express";
 import { authenticate } from "../../../middleware/authMiddleware";
 import {
   createBooking,
-  addCompanionsToBooking,
-  updateBookingStatus,
+  getUserBookings,
+  getUserInfoAndBookings,
+  getBookingById,
+  updateBooking,
+  deleteBooking,
   getAllBookings,
-  getBookingById
+  updateBookingStatus
 } from "../controllers/booking.controller";
 
 const router = express.Router();
@@ -15,9 +18,12 @@ router.use(authenticate);
 
 // Booking management routes
 router.post("/", createBooking);
-router.post("/:bookingId/companions", addCompanionsToBooking);
-router.put("/:bookingId/status", updateBookingStatus);
 router.get("/", getAllBookings);
+router.get("/user/:userId", getUserBookings);
+router.get("/user/:userId/info", getUserInfoAndBookings);
 router.get("/:bookingId", getBookingById);
+router.patch("/:bookingId", updateBooking);
+router.patch("/:bookingId/status", updateBookingStatus);
+router.delete("/:bookingId", deleteBooking);
 
-export default router; 
+export default router;
