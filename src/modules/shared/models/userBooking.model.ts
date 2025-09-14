@@ -30,6 +30,8 @@ export interface IUserBooking extends Document {
   itineraries: IItinerary[];
   companions: mongoose.Types.ObjectId[]; // Array of companion IDs
   isPrimary: boolean; // true for primary user, false for companions
+  bookingType: "primary" | "companion"; // More descriptive booking type
+  primaryBookingId?: mongoose.Types.ObjectId; // Reference to primary booking (for companions)
   isActive: boolean;
 }
 
@@ -86,6 +88,15 @@ const UserBookingSchema = new Schema<IUserBooking>(
       type: Boolean, 
       default: true 
     },
+    bookingType: {
+      type: String,
+      enum: ["primary", "companion"],
+      default: "primary"
+    },
+    primaryBookingId: {
+      type: Schema.Types.ObjectId,
+      ref: "UserBooking"
+    },
     isActive: { 
       type: Boolean, 
       default: true 
@@ -102,6 +113,9 @@ UserBookingSchema.pre<IUserBooking>("save", async function(next) {
     const random = Math.random().toString(36).substr(2, 5);
     this.bookingId = `ID-${timestamp}-${random}`.toUpperCase();
     
+    // Set bookingType based on isPrimary
+    this.bookingType = this.isPrimary ? "primary" : "companion";
+    
     // Generate package name for primary bookings only
     // Companion bookings should already have packageName set from the primary booking
     if (this.isPrimary && !this.packageName) {
@@ -115,9 +129,11 @@ UserBookingSchema.pre<IUserBooking>("save", async function(next) {
 UserBookingSchema.index({ userId: 1 });
 UserBookingSchema.index({ bookingId: 1 });
 UserBookingSchema.index({ packageName: 1 });
+UserBookingSchema.index({ isPrimary: 1 });
+UserBookingSchema.index({ bookingType: 1 });
+UserBookingSchema.index({ primaryBookingId: 1 });
 UserBookingSchema.index({ destination: 1 });
 UserBookingSchema.index({ status: 1 });
-UserBookingSchema.index({ isPrimary: 1 });
 UserBookingSchema.index({ isActive: 1 });
 
 export const UserBookingModel = mongoose.model<IUserBooking>("UserBooking", UserBookingSchema);

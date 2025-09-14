@@ -69,6 +69,8 @@ export interface BookingFilters {
   packageName?: string;
   destinationId?: string;
   search?: string;
+  bookingType?: "primary" | "companion";
+  isPrimary?: boolean;
 }
 
 export class BookingService {
@@ -94,6 +96,7 @@ export class BookingService {
       userId: new mongoose.Types.ObjectId(userId),
       destination: new mongoose.Types.ObjectId(destinationId),
       isPrimary: true,
+      bookingType: "primary",
       companions: []
     });
 
@@ -129,31 +132,69 @@ export class BookingService {
       destination = await DestinationModel.findById(primaryBooking.destination);
     }
 
+    // Get primary user to check for email conflicts
+    const primaryUser = await UserModel.findById(primaryBooking.userId);
+    if (!primaryUser) {
+      throw new Error("Primary user not found");
+    }
+
+    // Validate that no companion email matches the primary user's email
+    const duplicateEmail = companionsData.find(companion => 
+      companion.email.toLowerCase() === primaryUser.email.toLowerCase()
+    );
+    if (duplicateEmail) {
+      throw new Error(`Cannot add "${duplicateEmail.email}" as a companion because this email belongs to the primary user of this booking.`);
+    }
+
+    // Clear existing companions for this booking
+    primaryBooking.companions = [];
+    await primaryBooking.save();
+
     // Process each companion
     for (const companionData of companionsData) {
-      // Check if companion already exists for this user
-      let companion = await CompanionModel.findOne({ 
-        email: companionData.email,
-        userId: primaryBooking.userId 
-      });
+      // Check if user already exists by email
+      let user = await UserModel.findOne({ email: companionData.email });
 
-      if (!companion) {
-        // Create new companion
-        const tempPassword = generateTempPassword();
-        
-        companion = new CompanionModel({
-          ...companionData,
-          userId: primaryBooking.userId,
-          tempPassword,
-          isRegistered: false
-        });
+      if (!user) {
+        let tempPassword: string;
+        try {
+          // Create new user account for companion
+          tempPassword = generateTempPassword();
+          
+          user = new UserModel({
+            firstName: companionData.firstName,
+            lastName: companionData.lastName,
+            email: companionData.email,
+            phoneNumber: companionData.phoneNumber,
+            password: tempPassword, // Will be hashed by pre-save hook
+            isEmailVerified: false,
+            role: "user", // They are regular users, not companions
+            gender: "others", // Default gender for companions
+            isVerified: false,
+            twoFactorEnabled: false,
+            isBooked: false,
+            profilePicture: [] // Empty array for profile pictures
+          });
 
-        await companion.save();
+          await user.save();
+        } catch (error: any) {
+          // Handle duplicate email error
+          if (error.code === 11000 && error.keyPattern?.email) {
+            throw new Error(`A user with email "${companionData.email}" already exists. Please use a different email address for this companion.`);
+          }
+          // Re-throw other errors
+          throw error;
+        }
 
-        // Send welcome email to new companion
+        // Send welcome email to new user
         try {
           await sendCompanionWelcomeEmail(
-            companion,
+            {
+              firstName: companionData.firstName,
+              lastName: companionData.lastName,
+              email: companionData.email,
+              phoneNumber: companionData.phoneNumber
+            } as any,
             {
               packageName: primaryBooking.packageName,
               bookingId: primaryBooking.bookingId,
@@ -166,25 +207,99 @@ export class BookingService {
         } catch (emailError) {
           console.error("Failed to send companion email:", emailError);
         }
+      } else {
+        // Update existing user info if needed
+        const needsUpdate = 
+          user.firstName !== companionData.firstName ||
+          user.lastName !== companionData.lastName ||
+          user.phoneNumber !== companionData.phoneNumber;
+
+        if (needsUpdate) {
+          user.firstName = companionData.firstName;
+          user.lastName = companionData.lastName;
+          user.phoneNumber = companionData.phoneNumber;
+          await user.save();
+        }
+
+        // Send notification email to existing user about being added to booking
+        try {
+          await sendCompanionWelcomeEmail(
+            {
+              firstName: companionData.firstName,
+              lastName: companionData.lastName,
+              email: companionData.email,
+              phoneNumber: companionData.phoneNumber
+            } as any,
+            {
+              packageName: primaryBooking.packageName,
+              bookingId: primaryBooking.bookingId,
+              travelDate: primaryBooking.travelDate,
+              description: primaryBooking.description
+            } as any,
+            destination,
+            null // No temp password for existing users
+          );
+        } catch (emailError) {
+          console.error("Failed to send companion notification email:", emailError);
+        }
       }
 
-      // Create companion booking
-      const companionBooking = new UserBookingModel({
-        packageName: primaryBooking.packageName, // Same package name as primary
-        userId: companion._id,
-        destination: primaryBooking.destination,
-        travelDate: primaryBooking.travelDate,
-        returnDate: primaryBooking.returnDate,
-        amount: primaryBooking.amount,
-        description: primaryBooking.description,
-        status: primaryBooking.status,
-        documents: primaryBooking.documents,
-        itineraries: primaryBooking.itineraries,
-        isPrimary: false,
-        companions: []
+      // Create or update companion relationship record
+      let companion = await CompanionModel.findOne({ 
+        email: companionData.email,
+        bookingId: primaryBooking._id
       });
 
-      await companionBooking.save();
+      if (!companion) {
+        // Create new companion relationship
+        companion = new CompanionModel({
+          firstName: companionData.firstName,
+          lastName: companionData.lastName,
+          email: companionData.email,
+          phoneNumber: companionData.phoneNumber,
+          relationship: companionData.relationship as any,
+          userId: user._id,
+          bookingId: primaryBooking._id,
+          isRegistered: true // They are now registered users
+        });
+      } else {
+        // Update existing companion relationship
+        companion.firstName = companionData.firstName;
+        companion.lastName = companionData.lastName;
+        companion.phoneNumber = companionData.phoneNumber;
+        companion.relationship = companionData.relationship as any;
+        companion.isRegistered = true;
+      }
+
+      await companion.save();
+
+      // Create companion booking (separate booking for the companion)
+      const existingCompanionBooking = await UserBookingModel.findOne({
+        userId: user._id,
+        packageName: primaryBooking.packageName,
+        isPrimary: false
+      });
+
+      if (!existingCompanionBooking) {
+        const companionBooking = new UserBookingModel({
+          packageName: primaryBooking.packageName, // Same package name as primary
+          userId: user._id,
+          destination: primaryBooking.destination,
+          travelDate: primaryBooking.travelDate,
+          returnDate: primaryBooking.returnDate,
+          amount: primaryBooking.amount,
+          description: primaryBooking.description,
+          status: primaryBooking.status,
+          documents: primaryBooking.documents,
+          itineraries: primaryBooking.itineraries,
+          isPrimary: false,
+          bookingType: "companion",
+          primaryBookingId: primaryBooking._id,
+          companions: []
+        });
+
+        await companionBooking.save();
+      }
 
       // Add companion to primary booking's companions array
       primaryBooking.companions.push(companion._id as mongoose.Types.ObjectId);
@@ -312,7 +427,9 @@ export class BookingService {
       status,
       packageName,
       destinationId,
-      search
+      search,
+      bookingType,
+      isPrimary
     } = filters;
 
     const query: any = { isActive: true };
@@ -335,6 +452,14 @@ export class BookingService {
         { packageName: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } }
       ];
+    }
+
+    if (bookingType) {
+      query.bookingType = bookingType;
+    }
+
+    if (isPrimary !== undefined) {
+      query.isPrimary = isPrimary;
     }
 
     const skip = (page - 1) * limit;

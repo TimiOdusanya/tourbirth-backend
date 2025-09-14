@@ -11,6 +11,7 @@ import httpLogger from "./lib/log/morgan.log";
 import authRoutes from "./modules/shared/routes";
 import userRoutes from "./modules/user/routes";
 import adminRoutes from "./modules/admin/routes";
+import sharedRoutes  from "./modules/shared/routes";
 
 
 
@@ -55,6 +56,7 @@ console.log("Starting server...");
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", userRoutes);
 app.use("/api/v1", adminRoutes);
+app.use("/api/v1", sharedRoutes);
 
 
 const port = process.env.PORT || 8081;
