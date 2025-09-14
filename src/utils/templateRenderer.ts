@@ -860,6 +860,366 @@ export const renderEmailTemplate = (
           font-size: 15px;
         }
 
+        /* Waitlist Confirmation Styles */
+        .waitlist-container {
+          max-width: 600px;
+          margin: 0 auto;
+          background: #ffffff;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+        
+        .waitlist-hero {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 40px 30px;
+          text-align: center;
+          color: white;
+          position: relative;
+        }
+        
+        .waitlist-icon {
+          font-size: 48px;
+          margin-bottom: 20px;
+        }
+        
+        .waitlist-title {
+          font-size: 32px;
+          font-weight: 700;
+          margin: 0 0 10px 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .waitlist-subtitle {
+          font-size: 18px;
+          font-weight: 300;
+          margin: 0;
+          opacity: 0.9;
+        }
+        
+        .waitlist-content {
+          padding: 40px 30px;
+        }
+        
+        .waitlist-details {
+          background: #f8f9fa;
+          padding: 30px;
+          border-radius: 15px;
+          margin: 30px 0;
+          border: 1px solid #e9ecef;
+        }
+        
+        .waitlist-details h3 {
+          margin: 0 0 20px 0;
+          color: #333;
+          font-size: 20px;
+          font-weight: 600;
+        }
+        
+        .detail-card {
+          background: white;
+          padding: 25px;
+          border-radius: 12px;
+          border: 1px solid #e9ecef;
+        }
+        
+        .detail-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 0;
+          border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .detail-item:last-child {
+          border-bottom: none;
+        }
+        
+        .detail-label {
+          font-weight: 600;
+          color: #666;
+          font-size: 14px;
+        }
+        
+        .detail-value {
+          font-weight: 500;
+          color: #333;
+          font-size: 14px;
+          text-align: right;
+          max-width: 60%;
+          word-break: break-word;
+        }
+        
+        .whats-next {
+          margin: 40px 0;
+        }
+        
+        .whats-next h3 {
+          text-align: center;
+          margin: 0 0 30px 0;
+          color: #333;
+          font-size: 24px;
+          font-weight: 600;
+        }
+        
+        .steps-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 25px;
+        }
+        
+        .step-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 15px;
+          padding: 20px;
+          background: #f8f9fa;
+          border-radius: 15px;
+          border: 1px solid #e9ecef;
+        }
+        
+        .step-number {
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 18px;
+          flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+          margin: 0 0 8px 0;
+          color: #333;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        
+        .step-content p {
+          margin: 0;
+          color: #666;
+          font-size: 14px;
+          line-height: 1.4;
+        }
+        
+        .waitlist-footer {
+          text-align: center;
+          padding-top: 30px;
+          border-top: 1px solid #e9ecef;
+          color: #666;
+          line-height: 1.6;
+        }
+        
+        .waitlist-footer p {
+          margin: 0 0 10px 0;
+          font-size: 14px;
+        }
+        
+        .waitlist-footer .contact-info {
+          font-weight: 600;
+          color: #333;
+          margin-top: 20px !important;
+        }
+
+        /* Waitlist Notification Styles */
+        .notification-container {
+          max-width: 600px;
+          margin: 0 auto;
+          background: #ffffff;
+          border-radius: 20px;
+          overflow: hidden;
+        }
+        
+        .notification-hero {
+          background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+          padding: 40px 30px;
+          text-align: center;
+          color: white;
+          position: relative;
+        }
+        
+        .notification-icon {
+          font-size: 48px;
+          margin-bottom: 20px;
+        }
+        
+        .notification-title {
+          font-size: 32px;
+          font-weight: 700;
+          margin: 0 0 10px 0;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .notification-subtitle {
+          font-size: 18px;
+          font-weight: 300;
+          margin: 0;
+          opacity: 0.9;
+        }
+        
+        .notification-content {
+          padding: 40px 30px;
+        }
+        
+        .alert-message {
+          background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+          border: 2px solid #ffc107;
+          border-radius: 15px;
+          padding: 20px;
+          margin-bottom: 30px;
+          text-align: center;
+        }
+        
+        .alert-message p {
+          margin: 0;
+          color: #856404;
+          font-weight: 600;
+          font-size: 16px;
+        }
+        
+        .entry-details {
+          background: #f8f9fa;
+          padding: 30px;
+          border-radius: 15px;
+          margin: 30px 0;
+          border: 1px solid #e9ecef;
+        }
+        
+        .entry-details h3 {
+          margin: 0 0 20px 0;
+          color: #333;
+          font-size: 20px;
+          font-weight: 600;
+        }
+        
+        .detail-value.highlight {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-weight: 600;
+          font-size: 12px;
+        }
+        
+        .action-required {
+          margin: 40px 0;
+        }
+        
+        .action-required h3 {
+          text-align: center;
+          margin: 0 0 30px 0;
+          color: #333;
+          font-size: 24px;
+          font-weight: 600;
+        }
+        
+        .action-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 20px;
+        }
+        
+        .action-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 15px;
+          padding: 20px;
+          background: #f8f9fa;
+          border-radius: 15px;
+          border: 1px solid #e9ecef;
+        }
+        
+        .action-icon {
+          font-size: 24px;
+          width: 50px;
+          height: 50px;
+          background: white;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          flex-shrink: 0;
+        }
+        
+        .action-content h4 {
+          margin: 0 0 8px 0;
+          color: #333;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        
+        .action-content p {
+          margin: 0;
+          color: #666;
+          font-size: 14px;
+          line-height: 1.4;
+        }
+        
+        .quick-actions {
+          margin: 40px 0;
+          text-align: center;
+        }
+        
+        .quick-actions h3 {
+          margin: 0 0 20px 0;
+          color: #333;
+          font-size: 20px;
+          font-weight: 600;
+        }
+        
+        .action-buttons {
+          display: flex;
+          gap: 15px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        
+        .action-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 24px;
+          border-radius: 25px;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 14px;
+          transition: all 0.3s ease;
+        }
+        
+        .action-button.primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .action-button.secondary {
+          background: #f8f9fa;
+          color: #333;
+          border: 2px solid #e9ecef;
+        }
+        
+        .action-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .notification-footer {
+          text-align: center;
+          padding-top: 30px;
+          border-top: 1px solid #e9ecef;
+          color: #666;
+          line-height: 1.6;
+        }
+        
+        .notification-footer p {
+          margin: 0 0 10px 0;
+          font-size: 14px;
+        }
+
         /* Responsive Design */
         @media only screen and (max-width: 600px) {
           .container {
@@ -886,25 +1246,33 @@ export const renderEmailTemplate = (
           .welcome-hero,
           .verification-hero,
           .otp-hero,
-          .reset-hero {
+          .reset-hero,
+          .waitlist-hero,
+          .notification-hero {
             padding: 30px 20px;
           }
           
           .welcome-title,
           .verification-title,
           .otp-title,
-          .reset-title {
+          .reset-title,
+          .waitlist-title,
+          .notification-title {
             font-size: 28px;
           }
           
           .welcome-content,
           .verification-content,
           .otp-content,
-          .reset-content {
+          .reset-content,
+          .waitlist-content,
+          .notification-content {
             padding: 30px 20px;
           }
           
-          .features-grid {
+          .features-grid,
+          .steps-grid,
+          .action-grid {
             grid-template-columns: 1fr;
             gap: 15px;
           }
@@ -961,7 +1329,8 @@ export const renderEmailTemplate = (
             gap: 5px;
           }
           
-          .support-links {
+          .support-links,
+          .action-buttons {
             flex-direction: column;
             gap: 10px;
           }

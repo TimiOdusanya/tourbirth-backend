@@ -10,7 +10,8 @@ export interface ICompanion extends Document {
   password?: string; // Permanent password (optional)
   isRegistered: boolean;
   tempPassword?: string;
-  userId: mongoose.Types.ObjectId; // Reference to the main user
+  userId: mongoose.Types.ObjectId; // Reference to the user account
+  bookingId: mongoose.Types.ObjectId; // Reference to the specific booking
 }
 
 const CompanionSchema = new Schema<ICompanion>(
@@ -29,7 +30,12 @@ const CompanionSchema = new Schema<ICompanion>(
     tempPassword: { type: String },
     userId: { 
       type: Schema.Types.ObjectId, 
-      ref: "Account", 
+      ref: "user", 
+      required: true 
+    },
+    bookingId: { 
+      type: Schema.Types.ObjectId, 
+      ref: "UserBooking", 
       required: true 
     }
   },

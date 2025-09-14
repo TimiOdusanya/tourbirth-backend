@@ -18,7 +18,7 @@ export const sendCompanionWelcomeEmail = async (
   companion: ICompanion,
   booking: Partial<IBooking> | { packageName: string; bookingId: string; travelDate: Date; description: string },
   destination: IDestination,
-  tempPassword: string
+  tempPassword: string | null
 ): Promise<void> => {
   const packageName = 'packageName' in booking ? booking.packageName : 'TB-Package';
   const bookingId = 'bookingId' in booking ? booking.bookingId : 'TB-Booking';
@@ -26,7 +26,7 @@ export const sendCompanionWelcomeEmail = async (
   const description = 'description' in booking ? booking.description : 'Trip details';
 
   await sendEmail(companion.email, 'companionWelcome', {
-    subject: 'Welcome to TourBirth - Trip Companion',
+    subject: tempPassword ? 'Welcome to TourBirth - Trip Companion' : 'You\'ve been added to a TourBirth trip',
     companionName: `${companion.firstName} ${companion.lastName}`,
     packageName: packageName || 'TB-Package',
     bookingId: bookingId || 'TB-Booking',
@@ -34,7 +34,8 @@ export const sendCompanionWelcomeEmail = async (
     travelDate: travelDate ? new Date(travelDate).toLocaleDateString() : new Date().toLocaleDateString(),
     description: description || 'Trip details',
     email: companion.email,
-    tempPassword: tempPassword,
-    frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000'
+    tempPassword: tempPassword || undefined, // Don't send tempPassword for existing users
+    frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
+    isExistingUser: tempPassword === null // Flag to indicate if this is an existing user
   });
 }; 
