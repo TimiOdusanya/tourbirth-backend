@@ -8,7 +8,7 @@ const router = Router();
 router.use(authenticate);
 
 // User profile management routes
-router.put("/profile", UserController.updateUserProfile);
+router.patch("/profile", UserController.updateUserProfile);
 router.put("/profile/picture", UserController.updateProfilePicture);
 router.get("/profile", UserController.getUserProfile);
 
