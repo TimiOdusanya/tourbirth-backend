@@ -104,7 +104,7 @@ export class UserService {
     const [bookings, total] = await Promise.all([
       UserBookingModel.find(query)
         .populate("destination", "city country image")
-        .populate("companions", "firstName lastName email relationship")
+        .populate("companions", "firstName lastName email phoneNumber relationship")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -145,7 +145,7 @@ export class UserService {
 
     const booking = await UserBookingModel.findOne(query)
       .populate("destination", "city country image description")
-      .populate("companions", "firstName lastName email relationship phoneNumber")
+      .populate("companions", "firstName lastName email phoneNumber relationship")
       .lean();
 
     if (!booking) {
@@ -222,7 +222,7 @@ export class UserService {
     
     const bookings = await UserBookingModel.find(query)
       .populate("destination", "city country image")
-      .populate("companions", "firstName lastName email relationship")
+      .populate("companions", "firstName lastName email phoneNumber relationship")
       .sort({ createdAt: -1 })
       .lean();
     

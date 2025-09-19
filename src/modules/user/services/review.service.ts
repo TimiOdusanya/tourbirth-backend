@@ -54,6 +54,7 @@ export class ReviewService {
     } = filters;
 
     const query: any = { isActive: true, isApproved: true };
+    
 
     if (rating) {
       query.rating = rating;
