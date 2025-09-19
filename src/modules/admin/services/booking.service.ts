@@ -318,7 +318,7 @@ export class BookingService {
         isActive: true 
       })
         .populate("destination", "city country")
-        .populate("companions", "firstName lastName email")
+        .populate("companions", "firstName lastName email phoneNumber")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -356,7 +356,7 @@ export class BookingService {
     return await UserBookingModel.findOne(query)
       .populate("userId", "firstName lastName email")
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email relationship");
+      .populate("companions", "firstName lastName email phoneNumber relationship");
   }
 
   // Update booking
@@ -396,7 +396,7 @@ export class BookingService {
     return await UserBookingModel.findById(booking._id)
       .populate("userId", "firstName lastName email")
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email relationship");
+      .populate("companions", "firstName lastName email phoneNumber relationship");
   }
 
   // Delete booking (soft delete)
@@ -468,7 +468,7 @@ export class BookingService {
       UserBookingModel.find(query)
         .populate("userId", "firstName lastName email")
         .populate("destination", "city country")
-        .populate("companions", "firstName lastName email")
+        .populate("companions", "firstName lastName email phoneNumber relationship")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -503,7 +503,7 @@ export class BookingService {
       isActive: true 
     })
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email relationship")
+      .populate("companions", "firstName lastName email phoneNumber relationship")
       .sort({ createdAt: -1 });
 
     return {
@@ -531,6 +531,6 @@ export class BookingService {
     )
       .populate("userId", "firstName lastName email")
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email relationship");
+      .populate("companions", "firstName lastName email phoneNumber relationship");
   }
 }
