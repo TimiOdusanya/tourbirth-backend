@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { RelationshipType } from "../../../types/roles";
+import { RelationshipType, BookingStatus } from "../../../types/roles";
 
 export interface ICompanion extends Document {
   firstName: string;
@@ -7,11 +7,12 @@ export interface ICompanion extends Document {
   relationship: RelationshipType;
   email: string;
   phoneNumber: string;
-  password?: string; // Permanent password (optional)
+  password?: string;
   isRegistered: boolean;
   tempPassword?: string;
-  userId: mongoose.Types.ObjectId; // Reference to the user account
-  bookingId: mongoose.Types.ObjectId; // Reference to the specific booking
+  userId: mongoose.Types.ObjectId;
+  bookingId: mongoose.Types.ObjectId;
+  bookingStatus: BookingStatus;
 }
 
 const CompanionSchema = new Schema<ICompanion>(
@@ -25,7 +26,7 @@ const CompanionSchema = new Schema<ICompanion>(
     },
     email: { type: String, required: true },
     phoneNumber: { type: String, required: true },
-    password: { type: String }, // Optional permanent password
+    password: { type: String },
     isRegistered: { type: Boolean, default: false },
     tempPassword: { type: String },
     userId: { 
@@ -37,6 +38,11 @@ const CompanionSchema = new Schema<ICompanion>(
       type: Schema.Types.ObjectId, 
       ref: "UserBooking", 
       required: true 
+    },
+    bookingStatus: {
+      type: String,
+      enum: Object.values(BookingStatus),
+      default: BookingStatus.PENDING
     }
   },
   { timestamps: true }

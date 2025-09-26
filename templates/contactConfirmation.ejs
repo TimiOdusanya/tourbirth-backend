@@ -1,0 +1,50 @@
+<div class="content" style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+  <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h2 style="color: #333; text-align: center; margin-bottom: 30px;">Thank You for Contacting TourBirth! 🌟</h2>
+    
+    <p style="color: #555; font-size: 16px; line-height: 1.6;">Hello <strong><%= fullName %></strong>,</p>
+    
+    <p style="color: #555; font-size: 16px; line-height: 1.6;">Thank you for reaching out to us! We're excited to hear about your travel dreams and can't wait to help you plan an unforgettable journey.</p>
+    
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="color: #333; margin-top: 0;">Your Contact Details:</h3>
+      <ul style="color: #555; font-size: 15px; line-height: 1.8;">
+        <li><strong>Name:</strong> <%= fullName %></li>
+        <li><strong>Email:</strong> <%= email %></li>
+        <li><strong>Dream Destination:</strong> <%= dreamDestination %></li>
+        <li><strong>Travel Date:</strong> <%= new Date(travelDate).toLocaleDateString() %></li>
+      </ul>
+    </div>
+    
+    <div style="background-color: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffc107;">
+      <h3 style="color: #333; margin-top: 0;">Your Story:</h3>
+      <p style="color: #555; font-size: 15px; line-height: 1.8; font-style: italic;">"<%= story %>"</p>
+    </div>
+    
+    <div style="background-color: #e8f4fd; padding: 20px; border-radius: 8px; margin: 20px 0;">
+      <h3 style="color: #333; margin-top: 0;">What Happens Next?</h3>
+      <ul style="color: #555; font-size: 15px; line-height: 1.8;">
+        <li><strong>Review:</strong> Our team will carefully review your travel story and preferences</li>
+        <li><strong>Personalized Response:</strong> We'll get back to you shortly with a tailored response</li>
+        <li><strong>Custom Itinerary:</strong> If you're interested, we can create a personalized travel plan for your dream destination</li>
+        <li><strong>Follow-up:</strong> We'll stay in touch to ensure your travel dreams become reality</li>
+      </ul>
+    </div>
+    
+    <p style="color: #555; font-size: 16px; line-height: 1.6;">We're passionate about creating meaningful travel experiences, and your story has inspired us! We can't wait to help you explore <strong><%= dreamDestination %></strong>.</p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <a href="<%= frontendUrl %>" 
+         style="background-color: #007bff; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px; display: inline-block;">
+        Explore More Destinations
+      </a>
+    </div>
+    
+    
+    <p style="color: #555; font-size: 16px; line-height: 1.6;">Best regards,<br><strong>The TourBirth Team</strong></p>
+    
+    <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+      <p style="color: #999; font-size: 14px;">This is an automated email. Please do not reply to this message.</p>
+    </div>
+  </div>
+</div>

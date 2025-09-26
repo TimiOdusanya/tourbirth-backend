@@ -260,7 +260,8 @@ export class BookingService {
           relationship: companionData.relationship as any,
           userId: user._id,
           bookingId: primaryBooking._id,
-          isRegistered: true // They are now registered users
+          isRegistered: true, // They are now registered users
+          bookingStatus: primaryBooking.status // Set initial status to match booking
         });
       } else {
         // Update existing companion relationship
@@ -318,7 +319,7 @@ export class BookingService {
         isActive: true 
       })
         .populate("destination", "city country")
-        .populate("companions", "firstName lastName email phoneNumber")
+        .populate("companions", "firstName lastName email phoneNumber relationship bookingStatus")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -356,7 +357,7 @@ export class BookingService {
     return await UserBookingModel.findOne(query)
       .populate("userId", "firstName lastName email")
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email phoneNumber relationship");
+      .populate("companions", "firstName lastName email phoneNumber relationship bookingStatus");
   }
 
   // Update booking
@@ -396,7 +397,7 @@ export class BookingService {
     return await UserBookingModel.findById(booking._id)
       .populate("userId", "firstName lastName email")
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email phoneNumber relationship");
+      .populate("companions", "firstName lastName email phoneNumber relationship bookingStatus");
   }
 
   // Delete booking (soft delete)
@@ -468,7 +469,7 @@ export class BookingService {
       UserBookingModel.find(query)
         .populate("userId", "firstName lastName email")
         .populate("destination", "city country")
-        .populate("companions", "firstName lastName email phoneNumber relationship")
+        .populate("companions", "firstName lastName email phoneNumber relationship bookingStatus")
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
@@ -524,13 +525,91 @@ export class BookingService {
       query.bookingId = bookingId;
     }
 
-    return await UserBookingModel.findOneAndUpdate(
+    // Find the booking first to check if it's a primary booking
+    const booking = await UserBookingModel.findOne(query);
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+
+    // Update the booking status
+    const updatedBooking = await UserBookingModel.findOneAndUpdate(
       query,
       { status },
       { new: true }
     )
       .populate("userId", "firstName lastName email")
       .populate("destination", "city country")
-      .populate("companions", "firstName lastName email phoneNumber relationship");
+      .populate("companions", "firstName lastName email phoneNumber relationship bookingStatus");
+
+    // If this is a primary booking, update all companions' status too
+    if (booking.isPrimary) {
+      await BookingService.updateAllCompanionsBookingStatus(bookingId, status);
+    }
+
+    return updatedBooking;
+  }
+
+  static async removeCompanionFromBooking(bookingId: string, companionId: string): Promise<IUserBooking | null> {
+    const isObjectId = mongoose.Types.ObjectId.isValid(bookingId);
+    
+    const query: any = { isActive: true };
+    
+    if (isObjectId) {
+      query._id = new mongoose.Types.ObjectId(bookingId);
+    } else {
+      query.bookingId = bookingId;
+    }
+
+    const booking = await UserBookingModel.findOne(query);
+    if (!booking) {
+      throw new Error("Booking not found");
+    }
+
+    const companionObjectId = new mongoose.Types.ObjectId(companionId);
+    if (!booking.companions.includes(companionObjectId)) {
+      throw new Error("Companion not found in this booking");
+    }
+
+    booking.companions = booking.companions.filter(
+      (id) => !id.equals(companionObjectId)
+    );
+
+    await CompanionModel.findByIdAndDelete(companionId);
+
+    await UserBookingModel.updateMany(
+      { 
+        userId: companionObjectId,
+        primaryBookingId: booking._id 
+      },
+      { isActive: false }
+    );
+
+    await booking.save();
+
+    return await UserBookingModel.findById(booking._id)
+      .populate("userId", "firstName lastName email")
+      .populate("destination", "city country")
+      .populate("companions", "firstName lastName email phoneNumber relationship bookingStatus");
+  }
+
+  static async updateCompanionBookingStatus(companionId: string, status: BookingStatus): Promise<ICompanion | null> {
+    const companion = await CompanionModel.findByIdAndUpdate(
+      companionId,
+      { bookingStatus: status },
+      { new: true }
+    );
+
+    if (!companion) {
+      throw new Error("Companion not found");
+    }
+
+    return companion;
+  }
+
+  static async updateAllCompanionsBookingStatus(primaryBookingId: string, status: BookingStatus): Promise<void> {
+    await CompanionModel.updateMany(
+      { bookingId: new mongoose.Types.ObjectId(primaryBookingId) },
+      { bookingStatus: status }
+    );
   }
 }

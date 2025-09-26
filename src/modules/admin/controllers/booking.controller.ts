@@ -335,3 +335,89 @@ export const updateBookingStatus = async (req: AuthenticatedRequest, res: Respon
     });
   }
 };
+
+// Remove companion from a booking
+export const removeCompanionFromBooking = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user || !isAdmin(req.user)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied - Admin required"
+      });
+    }
+
+    const { bookingId, companionId } = req.params;
+
+    if (!bookingId || !companionId) {
+      return res.status(400).json({
+        success: false,
+        message: "Booking ID and Companion ID are required"
+      });
+    }
+
+    const booking = await BookingService.removeCompanionFromBooking(bookingId, companionId);
+
+    res.status(200).json({
+      success: true,
+      message: "Companion removed from booking successfully",
+      booking
+    });
+  } catch (error: any) {
+    const statusCode = error.message.includes("not found") ? 404 : 400;
+    res.status(statusCode).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+// Update companion's booking status
+export const updateCompanionBookingStatus = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user || !isAdmin(req.user)) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied - Admin required"
+      });
+    }
+
+    const { companionId } = req.params;
+    const { status } = req.body;
+
+    if (!companionId) {
+      return res.status(400).json({
+        success: false,
+        message: "Companion ID is required"
+      });
+    }
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: "Status is required"
+      });
+    }
+
+    // Validate that status is a valid BookingStatus
+    if (!Object.values(BookingStatus).includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status. Must be one of: " + Object.values(BookingStatus).join(", ")
+      });
+    }
+
+    const companion = await BookingService.updateCompanionBookingStatus(companionId, status as BookingStatus);
+
+    res.status(200).json({
+      success: true,
+      message: "Companion booking status updated successfully",
+      companion
+    });
+  } catch (error: any) {
+    const statusCode = error.message.includes("not found") ? 404 : 400;
+    res.status(statusCode).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
