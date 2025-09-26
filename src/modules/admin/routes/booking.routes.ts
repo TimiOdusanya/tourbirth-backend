@@ -8,7 +8,9 @@ import {
   updateBooking,
   deleteBooking,
   getAllBookings,
-  updateBookingStatus
+  updateBookingStatus,
+  removeCompanionFromBooking,
+  updateCompanionBookingStatus
 } from "../controllers/booking.controller";
 
 const router = express.Router();
@@ -25,5 +27,7 @@ router.get("/:bookingId", getBookingById);
 router.patch("/:bookingId", updateBooking);
 router.patch("/:bookingId/status", updateBookingStatus);
 router.delete("/:bookingId", deleteBooking);
+router.delete("/:bookingId/companion/:companionId", removeCompanionFromBooking);
+router.patch("/companion/:companionId/status", updateCompanionBookingStatus);
 
 export default router;

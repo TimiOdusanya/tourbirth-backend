@@ -67,14 +67,12 @@ export class UserProfileService {
     };
   }
 
-  // Admin updates any user profile
   static async updateUserProfileByAdmin(userId: string, updateData: UpdateProfileData): Promise<IUser> {
     const user = await UserModel.findById(userId);
     if (!user) {
       throw new Error("User not found");
     }
 
-    // If this is the first time booking, generate unique IDs
     if (updateData.destination && !user.bookingId) {
       const { bookingId, packageName } = this.generateUniqueIds();
       updateData.bookingId = bookingId;
@@ -83,49 +81,42 @@ export class UserProfileService {
       updateData.isBooked = true;
     }
 
-    // Update user profile
     Object.assign(user, updateData);
     await user.save();
 
     return user;
   }
 
-  // User updates their own profile
   static async updateOwnProfile(userId: string, updateData: UpdateProfileData): Promise<IUser> {
     const user = await UserModel.findById(userId);
     if (!user) {
       throw new Error("User not found");
     }
 
-    // Update user profile
     Object.assign(user, updateData);
     await user.save();
 
     return user;
   }
 
-  // Admin updates their own profile
   static async updateAdminProfile(adminId: string, updateData: Partial<IAdmin>): Promise<IAdmin> {
     const admin = await AdminModel.findById(adminId);
     if (!admin) {
       throw new Error("Admin not found");
     }
 
-    // Update admin profile
     Object.assign(admin, updateData);
     await admin.save();
 
     return admin;
   }
 
-  // Get user profile by ID (admin only)
   static async getUserProfileById(userId: string): Promise<IUser | null> {
     return await UserModel.findById(userId)
       .select('-password -verificationOTP -resetPasswordOTP')
       .populate('destination', 'city country');
   }
 
-  // Add companions to a user
   static async addCompanionsToUser(userId: string, companionsData: AddCompanionsData): Promise<ICompanion[]> {
     const user = await UserModel.findById(userId);
     if (!user) {
@@ -150,13 +141,13 @@ export class UserProfileService {
         ...companionData,
         userId,
         tempPassword,
-        isRegistered: false
+        isRegistered: false,
+        bookingStatus: user.status || BookingStatus.PENDING // Set initial status to user's booking status
       });
 
       await companion.save();
       companions.push(companion);
 
-      // Send welcome email to companion
       try {
         await sendCompanionWelcomeEmail(
           companion,
@@ -177,12 +168,10 @@ export class UserProfileService {
     return companions;
   }
 
-  // Get companions for a user
   static async getUserCompanions(userId: string): Promise<ICompanion[]> {
     return await CompanionModel.find({ userId }).sort({ createdAt: -1 });
   }
 
-  // Update companion information
   static async updateCompanion(companionId: string, updateData: Partial<ICompanion>): Promise<ICompanion> {
     const companion = await CompanionModel.findById(companionId);
     if (!companion) {
@@ -195,7 +184,6 @@ export class UserProfileService {
     return companion;
   }
 
-  // Remove sensitive data from user response
   static sanitizeUserResponse(user: IUser): Partial<IUser> {
     const userResponse = user.toObject();
     delete (userResponse as any).password;
@@ -204,7 +192,6 @@ export class UserProfileService {
     return userResponse;
   }
 
-  // Remove sensitive data from admin response
   static sanitizeAdminResponse(admin: IAdmin): Partial<IAdmin> {
     const adminResponse = admin.toObject();
     delete (adminResponse as any).password;
@@ -213,7 +200,6 @@ export class UserProfileService {
     return adminResponse;
   }
 
-  // Get all users with pagination and filters
   static async getAllUsers(filters: {
     page?: number;
     limit?: number;
@@ -224,7 +210,6 @@ export class UserProfileService {
     const { page = 1, limit = 10, status, search, isBooked } = filters;
     const skip = (Number(page) - 1) * Number(limit);
     
-    // Build filter object
     const filter: any = {};
     
     if (status) filter.status = status;

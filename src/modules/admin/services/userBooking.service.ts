@@ -153,7 +153,8 @@ export class UserBookingService {
           ...companionData,
           userId,
           tempPassword,
-          isRegistered: false
+          isRegistered: false,
+          bookingStatus: user.status || BookingStatus.PENDING // Set initial status to user's booking status
         });
 
         await companion.save();
