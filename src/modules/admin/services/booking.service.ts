@@ -570,16 +570,26 @@ export class BookingService {
       throw new Error("Companion not found in this booking");
     }
 
+    // Get the companion record to access the userId before deleting it
+    const companion = await CompanionModel.findById(companionId);
+    if (!companion) {
+      throw new Error("Companion record not found");
+    }
+
+    // Remove companion from primary booking's companions array
     booking.companions = booking.companions.filter(
       (id) => !id.equals(companionObjectId)
     );
 
+    // Delete the companion record
     await CompanionModel.findByIdAndDelete(companionId);
 
+    // Deactivate all companion bookings for this user that are linked to this primary booking
     await UserBookingModel.updateMany(
       { 
-        userId: companionObjectId,
-        primaryBookingId: booking._id 
+        userId: companion.userId, // Use the actual user ID from companion record
+        primaryBookingId: booking._id,
+        isPrimary: false
       },
       { isActive: false }
     );
