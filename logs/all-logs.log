@@ -601,3 +601,31 @@
 [32m2025-09-26 22:13:41:1341[39m info: [34mPOST /api/v1/auth/login 200 513.286 ms - 1387[39m
 [32m2025-09-26 22:13:55:1355[39m info: [34mPOST /api/v1/auth/admin/login 200 447.236 ms - 768[39m
 [32m2025-09-26 22:15:24:1524[39m info: [34mPATCH /api/v1/profiles/user/68b4960ddbd430256de2c3a2 200 726.124 ms - 1133[39m
+[32m2025-09-27 10:46:35:4635[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-27 10:46:47:4647[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-27 10:46:50:4650[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-27 21:01:19:119[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-27 21:02:02:22[39m info: [34mPATCH /api/v1/profiles/user/68b4960ddbd430256de2c3a2 200 724.242 ms - 1181[39m
+[32m2025-09-30 09:55:31:5531[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-30 09:55:44:5544[39m info: [34mPOST /api/v1/auth/login 200 482.383 ms - 1435[39m
+[32m2025-09-30 09:56:28:5628[39m info: [34mGET /api/v1/bookings/user/68b4960ddbd430256de2c3a2/info 403 239.367 ms - 60[39m
+[32m2025-09-30 10:00:14:014[39m info: [34mPOST /api/v1/auth/admin/login 200 466.282 ms - 768[39m
+[32m2025-09-30 10:01:16:116[39m info: [34mGET /api/v1/bookings/user/68b4960ddbd430256de2c3a2/info 200 2898.818 ms - 4821[39m
+[32m2025-09-30 10:02:17:217[39m info: [34mGET /api/v1/bookings/user/68b4960ddbd430256de2c3a2 200 718.122 ms - 3786[39m
+[32m2025-09-30 11:04:07:47[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-30 11:04:28:428[39m info: [34mApp running on port 4002.....[39m
+[32m2025-09-30 11:09:36:936[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:06:34:634[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:07:35:735[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:07:46:746[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:08:01:81[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:08:06:86[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:08:11:811[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:13:17:1317[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:13:25:1325[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:13:29:1329[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:15:09:159[39m info: [34mPOST /api/v1/newsletter/subscribe 201 2284.305 ms - 198[39m
+[32m2025-10-01 15:15:47:1547[39m info: [34mGET /api/v1/newsletter 200 563.729 ms - 423[39m
+[32m2025-10-01 15:16:04:164[39m info: [34mGET /api/v1/newsletter/68dd376b4ff7443e93c510e2 200 651.472 ms - 293[39m
+[32m2025-10-01 15:19:27:1927[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 15:19:35:1935[39m info: [34mApp running on port 4002.....[39m

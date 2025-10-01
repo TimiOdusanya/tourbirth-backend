@@ -5,6 +5,7 @@ import companionAuthRoutes from "./companionAuth.routes";
 import userRoutes from "../../user/routes";
 import waitlistRoutes from "./waitlist.routes";
 import contactRoutes from "./contact.routes";
+import newsletterRoutes from "./newsletter.routes";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use("/companion", companionAuthRoutes);
 router.use("/user", userRoutes);
 router.use("/waitlist", waitlistRoutes);
 router.use("/contact", contactRoutes);
+router.use("/newsletter", newsletterRoutes);
 
 export default router;
