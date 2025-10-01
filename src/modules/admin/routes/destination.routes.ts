@@ -13,14 +13,16 @@ import {
 
 const router = express.Router();
 
-// Apply auth middleware to all routes
-router.use(authenticate);
 
-// Destination CRUD routes
-router.post("/", createDestination);
-router.post("/bulk", createMultipleDestinations);
 router.get("/", getAllDestinations);
 router.get("/all", getAllDestinationsSimple);
+
+
+router.use(authenticate);
+
+
+router.post("/", createDestination);
+router.post("/bulk", createMultipleDestinations);
 router.get("/:id", getDestinationById);
 router.put("/:id", updateDestination);
 router.delete("/:id", deleteDestination);
