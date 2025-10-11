@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import { AuthenticatedRequest } from "../../../types/express";
 import { isAdmin } from "../../../types/typeGuards";
 import { DashboardService } from "../services/dashboard.service";
+import { Currency } from "../../../types/roles";
 
-// Get dashboard statistics
+// Get dashboard statistics - with optional currency filter
 export const getDashboardStats = async (req: AuthenticatedRequest, res: Response) => {
   try {
     if (!req.user || !isAdmin(req.user)) {
@@ -13,7 +14,17 @@ export const getDashboardStats = async (req: AuthenticatedRequest, res: Response
       });
     }
 
-    const dashboard = await DashboardService.getDashboardStats();
+    const { currency } = req.query;
+
+    // Validate currency if provided
+    if (currency && !Object.values(Currency).includes(currency as Currency)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid currency. Must be either 'naira' or 'usd'"
+      });
+    }
+
+    const dashboard = await DashboardService.getDashboardStats(currency as Currency | undefined);
 
     res.status(200).json({
       success: true,

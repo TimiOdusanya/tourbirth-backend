@@ -19,7 +19,9 @@ export const createBooking = async (req: AuthenticatedRequest, res: Response) =>
       destinationId,
       travelDate,
       returnDate,
-      amount,
+      totalAmount,
+      bookingAmount,
+      currency,
       description,
       documents,
       itineraries,
@@ -27,10 +29,10 @@ export const createBooking = async (req: AuthenticatedRequest, res: Response) =>
     } = req.body;
 
     // Validate required fields
-    if (!userId || !destinationId || !travelDate || !returnDate || !amount || !description) {
+    if (!userId || !destinationId || !travelDate || !returnDate || !totalAmount || !bookingAmount || !currency || !description) {
       return res.status(400).json({
         success: false,
-        message: "userId, destinationId, travelDate, returnDate, amount, and description are required"
+        message: "userId, destinationId, travelDate, returnDate, totalAmount, bookingAmount, currency, and description are required"
       });
     }
 
@@ -39,7 +41,9 @@ export const createBooking = async (req: AuthenticatedRequest, res: Response) =>
       destinationId,
       travelDate,
       returnDate,
-      amount,
+      totalAmount,
+      bookingAmount,
+      currency,
       description,
       documents,
       itineraries,
@@ -173,7 +177,9 @@ export const updateBooking = async (req: AuthenticatedRequest, res: Response) =>
       destinationId,
       travelDate,
       returnDate,
-      amount,
+      totalAmount,
+      bookingAmount,
+      currency,
       description,
       status,
       documents,
@@ -185,7 +191,9 @@ export const updateBooking = async (req: AuthenticatedRequest, res: Response) =>
       destinationId,
       travelDate,
       returnDate,
-      amount,
+      totalAmount,
+      bookingAmount,
+      currency,
       description,
       status,
       documents,

@@ -629,3 +629,54 @@
 [32m2025-10-01 15:16:04:164[39m info: [34mGET /api/v1/newsletter/68dd376b4ff7443e93c510e2 200 651.472 ms - 293[39m
 [32m2025-10-01 15:19:27:1927[39m info: [34mApp running on port 4002.....[39m
 [32m2025-10-01 15:19:35:1935[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 17:22:28:2228[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-01 17:22:49:2249[39m info: [34mGET /api/v1/destinations/all 200 246.165 ms - 1954[39m
+[32m2025-10-11 09:49:55:4955[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 09:50:08:508[39m info: [34mPOST /api/v1/newsletter/subscribe 409 297.062 ms - 81[39m
+[32m2025-10-11 09:51:07:517[39m info: [34mPOST /api/v1/newsletter/subscribe 201 3018.565 ms - 198[39m
+[32m2025-10-11 09:58:50:5850[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 09:59:02:592[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 09:59:25:5925[39m info: [34mPOST /api/v1/newsletter/subscribe 201 1626.193 ms - 198[39m
+[32m2025-10-11 10:03:36:336[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 10:05:43:543[39m info: [34mPOST /api/v1/newsletter/subscribe 201 1876.137 ms - 198[39m
+[32m2025-10-11 10:16:28:1628[39m info: [34mPOST /api/v1/upload-media 401 2.378 ms - 42[39m
+[32m2025-10-11 10:16:39:1639[39m info: [34mPOST /api/v1/auth/admin/login 200 474.012 ms - 768[39m
+[32m2025-10-11 10:16:54:1654[39m info: [34mPOST /api/v1/upload-media 200 1535.990 ms - 139[39m
+[32m2025-10-11 10:33:41:3341[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 10:34:11:3411[39m info: [34mPOST /api/v1/newsletter/subscribe 201 1374.404 ms - 198[39m
+[32m2025-10-11 10:44:44:4444[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 10:44:58:4458[39m info: [34mPOST /api/v1/newsletter/subscribe 201 1493.460 ms - 198[39m
+[32m2025-10-11 16:23:19:2319[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:23:24:2324[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:25:46:2546[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:26:43:2643[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:35:23:3523[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:39:22:3922[39m info: [34mPOST /api/v1/bookings 400 264.622 ms - 143[39m
+[32m2025-10-11 16:40:13:4013[39m info: [34mPOST /api/v1/bookings 400 722.371 ms - 125[39m
+[32m2025-10-11 16:40:20:4020[39m info: [34mPOST /api/v1/bookings 201 1071.265 ms - 717[39m
+[32m2025-10-11 16:41:27:4127[39m info: [34mPATCH /api/v1/bookings/68d6fdbe4e59d4e9e0347cb9 404 478.456 ms - 47[39m
+[32m2025-10-11 16:42:03:423[39m info: [34mGET /api/v1/dashboard/stats 200 1667.571 ms - 11500[39m
+[32m2025-10-11 16:42:28:4228[39m info: [34mGET /api/v1/dashboard/users 200 694.952 ms - 4138[39m
+[32m2025-10-11 16:45:58:4558[39m info: [34mGET /api/v1/dashboard/stats/by-currency?currency=usd 200 1180.674 ms - 173[39m
+[32m2025-10-11 16:46:08:468[39m info: [34mGET /api/v1/dashboard/stats/by-currency?currency=naira 200 1405.905 ms - 175[39m
+[32m2025-10-11 16:46:24:4624[39m info: [34mGET /api/v1/dashboard/stats/by-currency?currency=usd 200 1150.889 ms - 173[39m
+[32m2025-10-11 16:46:41:4641[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:50:39:5039[39m info: [34mPOST /api/v1/bookings 201 991.383 ms - 717[39m
+[32m2025-10-11 16:52:04:524[39m info: [34mPOST /api/v1/bookings 201 923.163 ms - 712[39m
+[32m2025-10-11 16:52:43:5243[39m info: [34mGET /api/v1/dashboard/stats/by-currency?currency=usd 200 1286.988 ms - 173[39m
+[32m2025-10-11 16:52:51:5251[39m info: [34mGET /api/v1/dashboard/stats/by-currency?currency=naira 200 1350.942 ms - 175[39m
+[32m2025-10-11 16:55:39:5539[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:55:57:5557[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 16:56:44:5644[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 17:08:31:831[39m info: [34mGET /api/v1/dashboard/stats/by-currency?currency=naira 200 1162.237 ms - 215[39m
+[32m2025-10-11 17:18:46:1846[39m info: [34mGET /api/v1/dashboard/stats 200 1703.472 ms - 11613[39m
+[32m2025-10-11 17:20:59:2059[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 17:21:58:2158[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 17:22:55:2255[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 17:24:16:2416[39m info: [34mGET /api/v1/dashboard/stats 200 1790.922 ms - 11567[39m
+[32m2025-10-11 17:24:43:2443[39m info: [34mGET /api/v1/dashboard/stats?currency=naira 200 1202.684 ms - 179[39m
+[32m2025-10-11 17:25:10:2510[39m info: [34mGET /api/v1/dashboard/stats?currency=usd 200 1154.136 ms - 177[39m
+[32m2025-10-11 17:26:05:265[39m info: [34mGET /api/v1/dashboard/stats?currency=usd 200 1176.015 ms - 187[39m
+[32m2025-10-11 17:26:22:2622[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 17:26:28:2628[39m info: [34mApp running on port 4002.....[39m
+[32m2025-10-11 17:26:30:2630[39m info: [34mApp running on port 4002.....[39m

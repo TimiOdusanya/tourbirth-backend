@@ -11,7 +11,7 @@ const router = express.Router();
 router.use(authenticate);
 
 // Dashboard routes
-router.get("/stats", getDashboardStats);
+router.get("/stats", getDashboardStats); // Returns combined stats (all) or currency-specific stats based on query param
 router.get("/users", getAllUsers);
 
 export default router; 

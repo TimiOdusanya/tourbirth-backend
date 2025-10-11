@@ -11,7 +11,9 @@ export interface CreateBookingData {
   destinationId: string;
   travelDate: Date;
   returnDate: Date;
-  amount: number;
+  totalAmount: number;
+  bookingAmount: number;
+  currency: string;
   description: string;
   documents?: Array<{
     name: string;
@@ -38,7 +40,9 @@ export interface UpdateBookingData {
   destinationId?: string;
   travelDate?: Date;
   returnDate?: Date;
-  amount?: number;
+  totalAmount?: number;
+  bookingAmount?: number;
+  currency?: string;
   description?: string;
   status?: BookingStatus;
   documents?: Array<{
@@ -288,7 +292,9 @@ export class BookingService {
           destination: primaryBooking.destination,
           travelDate: primaryBooking.travelDate,
           returnDate: primaryBooking.returnDate,
-          amount: primaryBooking.amount,
+          totalAmount: primaryBooking.totalAmount,
+          bookingAmount: primaryBooking.bookingAmount,
+          currency: primaryBooking.currency,
           description: primaryBooking.description,
           status: primaryBooking.status,
           documents: primaryBooking.documents,
