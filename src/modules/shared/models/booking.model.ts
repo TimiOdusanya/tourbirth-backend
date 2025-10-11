@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { BookingStatus } from "../../../types/roles";
+import { BookingStatus, Currency } from "../../../types/roles";
 
 export interface IDocument {
   name: string;
@@ -25,7 +25,9 @@ export interface IBooking extends Document {
   travelDate: Date;
   returnDate: Date;
   bookingDate: Date;
-  amount: number;
+  totalAmount: number; // Total amount for the booking
+  bookingAmount: number; // Booking/deposit amount
+  currency: Currency; // Currency type (Naira or USD)
   description: string;
   documents: IDocument[];
   itineraries: IItinerary[];
@@ -79,7 +81,14 @@ const BookingSchema = new Schema<IBooking>(
     travelDate: { type: Date, required: true },
     returnDate: { type: Date, required: true },
     bookingDate: { type: Date, default: Date.now },
-    amount: { type: Number, required: true },
+    totalAmount: { type: Number, required: true },
+    bookingAmount: { type: Number, required: true },
+    currency: { 
+      type: String, 
+      enum: Object.values(Currency), 
+      required: true,
+      default: Currency.NAIRA
+    },
     description: { type: String, required: true },
     documents: [DocumentSchema],
     itineraries: [ItinerarySchema],

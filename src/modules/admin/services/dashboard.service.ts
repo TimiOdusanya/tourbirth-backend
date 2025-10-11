@@ -1,30 +1,99 @@
 import { BookingModel } from "../../shared/models/booking.model";
+import { UserBookingModel } from "../../shared/models/userBooking.model";
 import { UserModel } from "../../user/models/userProfile.model";
-import { Role, BookingStatus } from "../../../types/roles";
+import { Role, BookingStatus, Currency } from "../../../types/roles";
 
 export class DashboardService {
-  // Get dashboard statistics
-  static async getDashboardStats() {
-    // Get current date and start of month
+  // Get dashboard statistics - unified endpoint with optional currency filter
+  static async getDashboardStats(currency?: Currency) {
     const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const thirtyDaysFromNow = new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000));
 
-    // Total bookings
-    const totalBookings = await BookingModel.countDocuments({ isActive: true });
+    // If currency is specified, return stats for that currency only
+    if (currency) {
+      // Total bookings for this currency
+      const totalBookings = await UserBookingModel.countDocuments({ 
+        currency,
+        isActive: true 
+      });
 
-    // Revenue this month
-    const monthlyBookings = await BookingModel.find({
-      createdAt: { $gte: startOfMonth, $lte: endOfMonth },
+      // Get all PAID bookings for this currency (all time)
+      const paidBookings = await UserBookingModel.find({
+        status: BookingStatus.PAID,
+        currency,
+        isActive: true
+      });
+
+      // Calculate revenue (total amount for all PAID bookings)
+      const revenue = paidBookings.reduce((total, booking) => total + booking.totalAmount, 0);
+      
+      // Calculate total booking amount (deposits for all PAID bookings)
+      const totalBookingsAmount = paidBookings.reduce((total, booking) => total + booking.bookingAmount, 0);
+      
+      // Calculate total profit (difference between totalAmount and bookingAmount for PAID bookings)
+      const totalProfit = paidBookings.reduce((total, booking) => {
+        return total + (booking.totalAmount - booking.bookingAmount);
+      }, 0);
+
+      // Upcoming tours for this currency
+      const upcomingTours = await UserBookingModel.find({
+        travelDate: { $gte: now, $lte: thirtyDaysFromNow },
+        currency,
+        isActive: true
+      })
+      .populate('userId', 'firstName surname email')
+      .populate('destination', 'city country')
+      .sort({ travelDate: 1 })
+      .limit(10);
+
+      // Total users
+      const totalUsers = await UserModel.countDocuments({ role: Role.User });
+
+      return {
+        currency,
+        totalBookings,
+        revenue,
+        totalBookingsAmount,
+        totalProfit,
+        upcomingTours: upcomingTours.length,
+        totalUsers,
+        upcomingToursDetails: upcomingTours
+      };
+    }
+
+    // If no currency specified, return combined stats for both currencies
+    // Total bookings (all currencies)
+    const totalBookings = await UserBookingModel.countDocuments({ isActive: true });
+
+    // Get all PAID bookings - separated by currency (all time)
+    const paidBookingsNaira = await UserBookingModel.find({
       status: BookingStatus.PAID,
+      currency: Currency.NAIRA,
       isActive: true
     });
 
-    const revenueThisMonth = monthlyBookings.reduce((total, booking) => total + booking.amount, 0);
+    const paidBookingsUSD = await UserBookingModel.find({
+      status: BookingStatus.PAID,
+      currency: Currency.USD,
+      isActive: true
+    });
 
-    // Upcoming tours (tours scheduled to happen soon - within next 30 days)
-    const thirtyDaysFromNow = new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000));
-    const upcomingTours = await BookingModel.find({
+    // Calculate for Naira
+    const revenueNaira = paidBookingsNaira.reduce((total, booking) => total + booking.totalAmount, 0);
+    const totalBookingsAmountNaira = paidBookingsNaira.reduce((total, booking) => total + booking.bookingAmount, 0);
+    const totalProfitNaira = paidBookingsNaira.reduce((total, booking) => {
+      return total + (booking.totalAmount - booking.bookingAmount);
+    }, 0);
+
+    // Calculate for USD
+    const revenueUSD = paidBookingsUSD.reduce((total, booking) => total + booking.totalAmount, 0);
+    const totalBookingsAmountUSD = paidBookingsUSD.reduce((total, booking) => total + booking.bookingAmount, 0);
+    const totalProfitUSD = paidBookingsUSD.reduce((total, booking) => {
+      return total + (booking.totalAmount - booking.bookingAmount);
+    }, 0);
+
+    // Upcoming tours (all currencies)
+    const upcomingTours = await UserBookingModel.find({
       travelDate: { $gte: now, $lte: thirtyDaysFromNow },
       isActive: true
     })
@@ -38,7 +107,18 @@ export class DashboardService {
 
     return {
       totalBookings,
-      revenueThisMonth,
+      revenue: {
+        naira: revenueNaira,
+        usd: revenueUSD
+      },
+      totalBookingsAmount: {
+        naira: totalBookingsAmountNaira,
+        usd: totalBookingsAmountUSD
+      },
+      totalProfit: {
+        naira: totalProfitNaira,
+        usd: totalProfitUSD
+      },
       upcomingTours: upcomingTours.length,
       totalUsers,
       upcomingToursDetails: upcomingTours

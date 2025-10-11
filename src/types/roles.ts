@@ -44,3 +44,9 @@ export enum Role {
     OTHER = "other",
   }
   
+
+  export enum Currency {
+    NAIRA = "naira",
+    USD = "usd",
+  }
+  
