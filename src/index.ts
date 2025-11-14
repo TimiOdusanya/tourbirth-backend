@@ -8,7 +8,10 @@ import logger from "./lib/log/winston.log";
 import httpLogger from "./lib/log/morgan.log";
 
 // Routes
-import authRoutes from "./modules/user/routes";
+import authRoutes from "./modules/shared/routes";
+import userRoutes from "./modules/user/routes";
+import adminRoutes from "./modules/admin/routes";
+import sharedRoutes  from "./modules/shared/routes";
 
 
 
@@ -19,7 +22,10 @@ const app = express();
 const allowedOrigins: string[] = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://flowva-frontend.vercel.app",
+  "https://tourbirth-frontend.vercel.app",
+  "https://tourbirth-dashboard.vercel.app",
+  "https://tours-one-gamma.vercel.app",
+  "https://tourbirth.com"
 ];
 
 app.use(
@@ -49,6 +55,10 @@ app.get("/", (req: Request, res: Response) => {
 console.log("Starting server...");
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1", userRoutes);
+app.use("/api/v1", adminRoutes);
+app.use("/api/v1", sharedRoutes);
+
 
 const port = process.env.PORT || 8081;
 

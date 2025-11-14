@@ -1,18 +1,19 @@
 {
-  "name": "flowvahub-backend",
+  "name": "tourbirth-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
-    "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "dev": "nodemon", 
+  "build": "echo 'Building project...' && tsc && echo '✅ Build successful!'",
+  "start": "node dist/index.js",
+  "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.864.0",
     "bcryptjs": "^3.0.2",
     "chalk": "^4.1.2",
     "cookie-parser": "^1.4.7",
@@ -24,7 +25,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "morgan": "^1.10.0",
+    "multer": "^2.0.2",
     "node-mailjet": "^6.0.8",
+    "speakeasy": "^2.0.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {
@@ -35,7 +38,9 @@
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.14.1",
+    "@types/speakeasy": "^2.0.10",
     "nodemon": "^3.1.9",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"

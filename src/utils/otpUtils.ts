@@ -1,4 +1,5 @@
 import Mailjet from "node-mailjet";
+import speakeasy from "speakeasy";
 import { renderEmailTemplate } from "./templateRenderer";
 
 const mailjet = Mailjet.apiConnect(
@@ -29,7 +30,7 @@ export const sendEmail = async (
       {
         From: {
           Email:  "owambe.erp@gmail.com",
-          Name: "Flowva",
+          Name: "Tourbirth",
         },
         To: [
           {
@@ -51,4 +52,19 @@ export const sendEmail = async (
     console.error("Error sending email:", error.statusCode, error.message);
     throw new Error("Failed to send email");
   }
+};
+
+
+// Generate a secret key for 2FA
+export const generate2FASecret = () => {
+  return speakeasy.generateSecret({ name: "Owambe FRD" });
+};
+
+// Verify the 2FA code
+export const verify2FACode = (secret: any, token: string) => {
+  return speakeasy.totp.verify({
+    secret: secret.base32,
+    encoding: "base32",
+    token: token,
+  });
 };

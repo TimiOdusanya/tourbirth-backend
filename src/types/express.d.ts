@@ -1,9 +1,12 @@
 import { Request } from "express";
+import { IUser } from "../modules/user/models/userProfile.model";
+import { IAdmin } from "../modules/admin/models/adminProfile.model";
+import { ICompanion } from "../modules/shared/models/companion.model";
 
 export interface AuthenticatedRequest extends Request {
-  user: {
+  user?: (IUser | IAdmin | ICompanion) & { 
     _id: string;
-    email: string;
-    [key: string]: any;
+    role: string;
+    companionId?: string;
   };
 }
